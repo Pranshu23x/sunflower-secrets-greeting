@@ -88,14 +88,20 @@ const GreetingCard = () => {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  <div className="text-4xl mb-4">🌻</div>
+                <div className="space-y-6">
+                  <div className="text-4xl mb-4 animate-bounce">🌻</div>
                   <h2 className="text-xl font-medium text-brown-800">
                     Hey {name}, nice to meet you!
                   </h2>
-                  <p className="text-brown-700">
+                  <p className="text-brown-700 mb-4">
                     Let's connect 🌻
                   </p>
+                  <Button
+                    onClick={() => window.open('https://www.instagram.com/pranshu23x/', '_blank')}
+                    className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-medium py-3 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105"
+                  >
+                    Follow on Instagram ✨
+                  </Button>
                 </div>
               )}
               

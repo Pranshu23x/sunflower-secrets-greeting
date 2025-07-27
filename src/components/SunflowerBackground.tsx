@@ -4,22 +4,31 @@ import React from 'react';
 const SunflowerBackground = () => {
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      {/* Floating sunflower petals */}
+      {/* Enhanced floating elements */}
       <div className="absolute inset-0">
-        {[...Array(12)].map((_, i) => (
+        {[...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="absolute opacity-20"
+            className={`absolute text-3xl animate-float opacity-20 ${
+              i % 3 === 0 ? 'animate-pulse' : i % 3 === 1 ? 'animate-bounce' : ''
+            }`}
             style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 10}s`,
-              animationDuration: `${8 + Math.random() * 4}s`,
+              left: `${(i * 7 + 5) % 95}%`,
+              top: `${(i * 11 + 3) % 85}%`,
+              animationDelay: `${i * 0.4}s`,
+              animationDuration: `${5 + (i % 4)}s`,
+              filter: 'drop-shadow(0 0 15px rgba(251, 191, 36, 0.4))'
             }}
           >
-            <div className="w-6 h-6 bg-gradient-to-br from-sunflower-300 to-sunflower-500 rounded-full animate-petal-fall" />
+            {i % 5 === 0 ? '🌻' : i % 5 === 1 ? '🌸' : i % 5 === 2 ? '✨' : i % 5 === 3 ? '🦋' : '💛'}
           </div>
         ))}
       </div>
+      
+      {/* Gradient overlays for depth */}
+      <div className="absolute inset-0 bg-gradient-to-r from-sunflower-200/30 via-transparent to-orange-200/20" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-sunflower-100/15 to-amber-100/40" />
+      <div className="absolute inset-0 bg-gradient-radial from-sunflower-300/10 via-transparent to-transparent" />
       
       {/* Decorative sunflower SVGs */}
       <div className="absolute top-10 left-10 opacity-10 animate-float">

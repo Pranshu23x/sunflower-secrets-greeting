@@ -56,8 +56,9 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-gradient-to-br from-sunflower-50 via-amber-50 to-sunflower-100 text-foreground font-poppins;
+    @apply bg-gradient-to-br from-sunflower-50 via-amber-50 to-orange-100 text-foreground font-poppins;
     min-height: 100vh;
+    background-attachment: fixed;
   }
 }
 
@@ -70,10 +71,44 @@ All colors MUST be HSL.
   }
   
   .glassmorphism-card {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 
+      0 25px 45px rgba(0, 0, 0, 0.1),
+      0 0 80px rgba(251, 191, 36, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+  
+  .animate-bloom {
+    animation: bloom 0.8s ease-out;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  @keyframes bloom {
+    0% {
+      transform: scale(0.3) rotate(-10deg);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1) rotate(5deg);
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% {
+      text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+    }
+    50% {
+      text-shadow: 0 0 30px rgba(251, 191, 36, 0.8), 0 0 40px rgba(251, 191, 36, 0.3);
+    }
   }
 }
