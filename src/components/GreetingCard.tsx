@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import ConfettiEffect from './ConfettiEffect';
@@ -9,6 +9,37 @@ const GreetingCard = () => {
   const [showGreeting, setShowGreeting] = useState(false);
   const [isSecret, setIsSecret] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [typingText, setTypingText] = useState('');
+
+  // Auto redirect for non-secret names
+  useEffect(() => {
+    if (showGreeting && !isSecret) {
+      const timer = setTimeout(() => {
+        window.open('https://www.instagram.com/pranshu23x/', '_blank');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showGreeting, isSecret]);
+
+  // Typing animation for secret message
+  useEffect(() => {
+    if (isSecret) {
+      const message = "Hey ! i guess you cracked the code to this website and my heart ❤️";
+      let currentIndex = 0;
+      setTypingText('');
+      
+      const typeTimer = setInterval(() => {
+        if (currentIndex < message.length) {
+          setTypingText(prev => prev + message[currentIndex]);
+          currentIndex++;
+        } else {
+          clearInterval(typeTimer);
+        }
+      }, 80);
+      
+      return () => clearInterval(typeTimer);
+    }
+  }, [isSecret]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +67,7 @@ const GreetingCard = () => {
     setShowGreeting(false);
     setIsSecret(false);
     setShowConfetti(false);
+    setTypingText('');
     setName('');
   };
 
@@ -43,12 +75,18 @@ const GreetingCard = () => {
     <div className="relative">
       {showConfetti && <ConfettiEffect />}
       
-      <div className="glassmorphism-card rounded-3xl p-8 md:p-12 max-w-md mx-auto shadow-2xl transform transition-all duration-300 hover:scale-105">
+      <div className={`glassmorphism-card rounded-3xl p-8 md:p-12 max-w-md mx-auto shadow-2xl transform transition-all duration-500 hover:scale-105 ${
+        isSecret ? 'bg-gradient-to-br from-pink-100/40 via-red-50/30 to-rose-100/40 border-pink-200/50' : ''
+      }`}>
         <div className="text-center">
-          <h1 className="font-pacifico text-3xl md:text-4xl text-sunflower-700 mb-2 animate-pulse-glow">
-            Sunflower Greetings
+          <h1 className={`font-pacifico text-3xl md:text-4xl mb-2 animate-pulse-glow ${
+            isSecret ? 'text-pink-600' : 'text-sunflower-700'
+          }`}>
+            {isSecret ? '💕 Sweet Secrets 💕' : 'Sunflower Greetings'}
           </h1>
-          <div className="w-16 h-1 bg-gradient-to-r from-sunflower-400 to-sunflower-600 rounded-full mx-auto mb-6"></div>
+          <div className={`w-16 h-1 rounded-full mx-auto mb-6 ${
+            isSecret ? 'bg-gradient-to-r from-pink-400 to-red-400' : 'bg-gradient-to-r from-sunflower-400 to-sunflower-600'
+          }`}></div>
           
           {!showGreeting ? (
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -76,15 +114,20 @@ const GreetingCard = () => {
           ) : (
             <div className="space-y-6 animate-in fade-in-50 duration-500">
               {isSecret ? (
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <div className="animate-bloom">
-                    <div className="text-6xl mb-4">🌻</div>
-                    <h2 className="text-2xl font-bold text-sunflower-700 mb-2">
-                      Oops… I guess you cracked the code!
-                    </h2>
-                    <p className="text-brown-700 text-lg">
-                      Welcome back, {name}! 🎉
-                    </p>
+                    <div className="text-6xl mb-4">💖</div>
+                    <div className="min-h-[120px] flex items-center justify-center">
+                      <p className="text-lg font-medium text-pink-600 leading-relaxed text-center">
+                        {typingText}
+                        <span className="animate-pulse">|</span>
+                      </p>
+                    </div>
+                    <div className="flex justify-center space-x-2 mt-4">
+                      <span className="text-2xl animate-pulse">💕</span>
+                      <span className="text-2xl animate-bounce">🌹</span>
+                      <span className="text-2xl animate-pulse">💕</span>
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -96,21 +139,22 @@ const GreetingCard = () => {
                   <p className="text-brown-700 mb-4">
                     Let's connect 🌻
                   </p>
-                  <Button
-                    onClick={() => window.open('https://www.instagram.com/pranshu23x/', '_blank')}
-                    className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-medium py-3 px-6 rounded-xl shadow-lg transform transition-all duration-200 hover:scale-105"
-                  >
-                    Follow on Instagram ✨
-                  </Button>
+                  <p className="text-sm text-brown-600 animate-pulse">
+                    Redirecting to Instagram in 2 seconds...
+                  </p>
                 </div>
               )}
               
               <Button
                 onClick={resetGreeting}
                 variant="outline"
-                className="mt-6 border-sunflower-300 text-sunflower-700 hover:bg-sunflower-50 rounded-xl px-6 py-2"
+                className={`mt-6 rounded-xl px-6 py-2 ${
+                  isSecret 
+                    ? 'border-pink-300 text-pink-700 hover:bg-pink-50' 
+                    : 'border-sunflower-300 text-sunflower-700 hover:bg-sunflower-50'
+                }`}
               >
-                Try Another Name
+                {isSecret ? 'Try Another Name 💕' : 'Try Another Name'}
               </Button>
             </div>
           )}
